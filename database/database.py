@@ -11,7 +11,39 @@ from sqlalchemy import Column, Integer, Boolean, String, ForeignKey, UniqueConst
 
 
 from config import Config
+from sqlalchemy import select
+from sqlalchemy.orm import Mapped, declarative_base, mapped_column
 
+from sqlgold import create_db
+
+Base = declarative_base()
+
+
+class MyClass(Base):
+    __tablename__ = "tclass"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+
+## Connect our db and create our tables
+db = create_db("sqlite://", Base=Base, create_all=True)
+
+## Use session as an instance
+obj = MyClass()
+session = db.Session()
+session.add(obj)
+session.commit()
+
+# Use Session as a contextmanager
+with db.Session() as session:
+    obj = MyClass()
+    session.add(obj)
+    session.commit()
+
+# Use Session as a contextmanager
+with db.Session.begin() as session:
+    obj = MyClass()
+    session.add(obj)
 
 def start() -> scoped_session:
     engine = create_engine(Config.DB_URI, client_encoding="utf8")
