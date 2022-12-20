@@ -2,15 +2,15 @@ name: videomerger
 image:
   name: okteto.dev/videomerger
 autocreate: true
-command: bash
-context: yarn start
+command: ["bash"]
+context: .
 deploy:
-  - kubectl apply -f kubernetes.yaml
-  - helm upgrade --install movies chart --set api.image=${OKTETO_BUILD_API_IMAGE} --set frontend.image=${OKTETO_BUILD_FRONTEND_IMAGE}
-  build:
+  -kubectl apply -f kubernetes.yaml
+  
+build:
    - OKTETO_BUILD_MAP-GUI_REGISTRY: image registry
-   - OKTETO_BUILD_MAP-GUI_REPOSITORY: image repo
- dodckerfile: Dockerfile
+   
+dodckerfile: Dockerfile
 volumes:
 - /root/.cache/pip
 sync:
@@ -18,8 +18,7 @@ sync:
  dependencies:
   frontend:
     repository: https://github.com/okteto/movies-frontend
-    manifest: okteto.yml
-    branch: main
+ 
     variables:
       ENVIRONMENT: development
       DEBUG: true
