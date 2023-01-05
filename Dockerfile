@@ -3,9 +3,9 @@ WORKDIR /app
 
 RUN apt -qq update && apt -qq install -y git ffmpeg
 COPY . .
-ADD . /app
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
 EXPOSE 8080
 
-CMD ["python", "bot.py"]
+CMD ["python", "bot.py" , "--bind", "0.0.0.0:8080"]
