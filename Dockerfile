@@ -1,7 +1,7 @@
 FROM python:3.8.6
-WORKDIR /app
+RUN python -m pip install --upgrade pip
 
-RUN apt -qq update && apt -qq install -y git ffmpeg
+RUN apt -qq update && apt -qq install -y git wget pv jq wget python3-dev ffmpeg mediainfo
 COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
