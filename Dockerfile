@@ -1,11 +1,11 @@
-FROM python:3.8.6
+FROM python:3.9.2-slim-buster
+RUN mkdir /app && chmod 777 /app
+WORKDIR /app
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt -qq update && apt -qq install -y git ffmpeg
+COPY . .
+COPY requirements.txt .
 RUN python -m pip install --upgrade pip
-
-RUN apt -qq update && apt -qq install -y git wget pv jq wget python3-dev ffmpeg mediainfo
+RUN pip3 install --no-cache-dir -r requirements.txt
 COPY . .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-EXPOSE 8080
-
-CMD ["python", "bot.py" , "--bind", "0.0.0.0:8080"]
+CMD python3 main.py
